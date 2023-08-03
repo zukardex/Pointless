@@ -71,8 +71,8 @@ void loop() {
               delay(500);
               tft.fillScreen(BLACK);
               tft.drawLine(0, tft.height(), farthest.x, farthest.y, BLUE);
-              count=0;
-                  }
+              delay(500); count=0;
+      }
     
     
 
