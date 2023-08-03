@@ -42,9 +42,9 @@ void setup() {
 
   
 }
-#define limit 250
+#define limit 30
 TSPoint collection[limit]; 
-int d=0;
+TSPoint p1;
 int count=0;
 void loop() {
 
@@ -58,18 +58,22 @@ void loop() {
     if (p.z > MINPRESSURE && p.z < MAXPRESSURE) {
         p.x = map(p.x, TS_MINX, TS_MAXX,0, tft.width());
         p.y = map(p.y, TS_MINY, TS_MAXY, tft.height(), 0);
-        tft.fillCircle(p.x, p.y, 3, RED);
-        collection[count]=p;
-        count++;
+        if((pow(p.x - p1.x,2) + pow(p.y-p1.y,2)>1000) ){
+          collection[count]=p;
+          p1=p; 
+          count++;                   
+        }
+        tft.fillCircle(p.x, p.y, 1, RED);
+        
 
       }
       if(count==limit){
               delay(500);
               tft.fillScreen(BLACK);
-              int i=0;
+              int i=1;
             while(i<count){
-
-                  tft.fillCircle(tft.width() - collection[i].x, tft.height() - collection[i].y, 3, RED);              
+                
+                  tft.drawLine(collection[i-1].x, collection[i-1].y , collection[i].x, collection[i].y, BLUE);       
                   i++;   
             }
             i=0;
