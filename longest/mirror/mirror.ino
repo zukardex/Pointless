@@ -42,7 +42,8 @@ void setup() {
 
   
 }
-TSPoint farthest; 
+#define limit 200
+TSPoint collection[limit]; 
 int d=0;
 int count=0;
 void loop() {
@@ -50,8 +51,7 @@ void loop() {
    
   digitalWrite(13, HIGH);
     TSPoint p = ts.getPoint();
-    farthest.x=0; 
-    farthest.y=tft.height();
+    
   digitalWrite(13, LOW);
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
@@ -59,20 +59,24 @@ void loop() {
         p.x = map(p.x, TS_MINX, TS_MAXX,0, tft.width());
         p.y = map(p.y, TS_MINY, TS_MAXY, tft.height(), 0);
         tft.fillCircle(p.x, p.y, 3, RED);
-        if((pow((farthest.x - p.x),2))+ (pow((farthest.y - p.y),2)) > d){
-                      farthest.x=p.x;
-                      farthest.y=p.y;
-                      d=pow((farthest.x - p.x),2) + pow((farthest.y - p.y),2);                                          
-        }
+        collection[count]=p;
         count++;
 
       }
-      if(count==50){
+      if(count==limit){
               delay(500);
               tft.fillScreen(BLACK);
-              tft.drawLine(0, tft.height(), farthest.x, farthest.y, BLUE);
+              int i=0;
+            while(i<count){
+
+                  tft.fillCircle(tft.width() - collection[i].x, tft.height() - collection[i].y, 3, RED);              
+                  i++;   
+            }
+            i=0;
+              
+              delay(500); 
               count=0;
-                  }
+      }
     
     
 
